@@ -11,6 +11,8 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - "4001:80"
+    depends_on:
+      - backend
     networks:
       - supermetrics
 
