@@ -21,7 +21,8 @@ class ConfigService
     private function init(): void
     {
         $this->configs = [
-            'routes' => include $_SERVER['DOCUMENT_ROOT'] . '/config/routes.php'
+            'routes' => include $_SERVER['DOCUMENT_ROOT'] . '/config/routes.php',
+            'supermetrics_api' => include $_SERVER['DOCUMENT_ROOT'] . '/config/supermetrics_api.php'
         ];
     }
 }

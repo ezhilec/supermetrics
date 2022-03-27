@@ -5,12 +5,9 @@ use App\Services\RouteService;
 
 require(__DIR__ . '/vendor/autoload.php');
 
-$url = $_SERVER['REQUEST_URI'];
+session_start();
 
-//$a = preg_match('/^\/users\/(?<sad>.+)$/', '/users/1', $b);
-//
-//var_dump($b);
-//exit;
+$url = $_SERVER['REQUEST_URI'];
 
 try {
     $configService = new ConfigService();
@@ -22,6 +19,7 @@ try {
         ->parseUrl($url)
         ->setRoutes($routes)
         ->executeController();
+
 }  catch (\Throwable $e) {
     echo $e->getMessage();
 }

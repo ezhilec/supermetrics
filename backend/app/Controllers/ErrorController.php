@@ -5,6 +5,7 @@ class ErrorController
 {
     public function show404(): void
     {
+        header("HTTP/1.1 404 Not Found");
         echo 'error 404';
     }
 }
