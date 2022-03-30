@@ -1,25 +1,43 @@
 <?php
 namespace App\Controllers;
 
+use App\ApiClients\BaseApiClient;
 use App\ApiClients\SupermetricsApiClient;
-use App\Requests\PostRequest;
+use App\CacheClients\CacheClientInterface;
+use App\CacheClients\DatabaseCacheClient;
+use App\Requests\UserItemRequest;
+use App\Requests\UserRequest;
+use App\Services\PostService;
 use App\Views\JsonView;
 
 class UserController
 {
-    public function index(array $request): void
+    private CacheClientInterface $cacheClient;
+    private BaseApiClient $apiClient;
+
+    public function __construct()
     {
-       // $apiClient = new SupermetricsApiClient();
-
-        //$users = (new PostRequest($apiClient))->getUsers($request->page);
-
-       // JsonView::render($users);
+        $this->cacheClient = new DatabaseCacheClient();
+        $this->apiClient = new SupermetricsApiClient();
     }
 
-    public function show(array $request): void
+    public function index(array $params): void
     {
-        JsonView::render([
-            'asd' => 'cdsa'
-        ]);
+        $request = new UserRequest($params);
+
+        $posts = (new PostService($this->cacheClient, $this->apiClient))
+            ->getPostsUsers($request->page);
+
+        JsonView::render($posts);
+    }
+
+    public function show(array $params): void
+    {
+        $request = new UserItemRequest($params);
+
+        $userStatistics = (new PostService($this->cacheClient, $this->apiClient))
+            ->getUserStatistics($request->slug, 1000);
+
+        JsonView::render($userStatistics);
     }
 }

@@ -62,19 +62,18 @@ abstract class BaseApiClient
     {
         if (!$request->getToken()) {
             $this->authRequest();
-            $request->setToken($this->getToken());
-
             if (!$this->getToken()) {
                 throw new \Exception("Can't login to API");
             }
         }
 
+        $request->setToken($this->getToken());
         $response = $this->request($request);
 
         if ($response->hasTokenError()) {
             $this->authRequest();
-            $request->setToken($this->getToken());
 
+            $request->setToken($this->getToken());
             $response = $this->request($request);
         } elseif ($response->hasError()) {
             $message = $response->getError();
@@ -84,14 +83,14 @@ abstract class BaseApiClient
         return $response;
     }
 
-    protected function setToken($token): void
+    protected function setToken(string $token): void
     {
-        $_SESSION[self::SESSION_TOKEN_NAME] = $token;
+        $_SESSION[static::SESSION_TOKEN_NAME] = $token;
     }
 
     protected function getToken(): ?string
     {
-        return $_SESSION[self::SESSION_TOKEN_NAME] ?? null;
+        return $_SESSION[static::SESSION_TOKEN_NAME] ?? null;
     }
 
     abstract public function request(ApiRequestInterface $request): ApiResponseInterface;

@@ -5,22 +5,45 @@ namespace App\DTOs;
 class PostDTO
 {
     public string $id;
-    public string $fromName;
-    public string $fromId;
+    public string $from_name;
+    public string $from_id;
     public string $message;
     public string $type;
-    public string $createdTime;
+    public string $created_at;
 
-    // todo replace to hydrator
-    public function fromArray(array $data): PostDTO
+    public function fromSupermetricsApi(array $data): PostDTO
     {
         $this->id = $data['id'];
-        $this->fromName = $data['from_name'];
-        $this->fromId = $data['from_id'];
+        $this->from_name = $data['from_name'];
+        $this->from_id = $data['from_id'];
         $this->message = $data['message'];
         $this->type = $data['type'];
-        $this->createdTime = $data['created_time'];
+        $this->created_at = $data['created_time'];
 
         return $this;
+    }
+
+    public function fromDatabase(array $data): PostDTO
+    {
+        $this->id = $data['slug'];
+        $this->from_name = $data['user_name'];
+        $this->from_id = $data['user_slug'];
+        $this->message = $data['message'];
+        $this->type = $data['type'];
+        $this->created_at = $data['created_at'];
+
+        return $this;
+    }
+
+    public function toDatabaseArray(): array
+    {
+        return [
+            'slug' => $this->id,
+            'user_name' => $this->from_name,
+            'user_slug' => $this->from_id,
+            'message' => $this->message,
+            'type' => $this->type,
+            'created_at' => $this->created_at,
+        ];
     }
 }

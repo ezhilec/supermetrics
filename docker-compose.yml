@@ -38,6 +38,26 @@ services:
     networks:
       - supermetrics
 
+  database:
+    container_name: supermetrics-database
+    image: mysql
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/1.sql
+      - supermetrics_db_data:/var/lib/mysql
+    ports:
+      - "4003:3306"
+    security_opt:
+      - seccomp:unconfined
+    networks:
+      - supermetrics
+
+volumes:
+  supermetrics_db_data:
+
 networks:
   supermetrics:
     driver: bridge

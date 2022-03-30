@@ -20,9 +20,11 @@ class ConfigService
 
     private function init(): void
     {
+        $rootDirectory = $_SERVER['DOCUMENT_ROOT'];
+
         $this->configs = [
-            'routes' => include $_SERVER['DOCUMENT_ROOT'] . '/config/routes.php',
-            'supermetrics_api' => include $_SERVER['DOCUMENT_ROOT'] . '/config/supermetrics_api.php'
+            'routes' => include $rootDirectory . '/config/routes.php',
+            'supermetrics_api' => include $rootDirectory . '/config/supermetrics_api.php'
         ];
     }
 }

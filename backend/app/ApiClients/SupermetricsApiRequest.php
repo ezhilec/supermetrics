@@ -101,6 +101,7 @@ class SupermetricsApiRequest implements ApiRequestInterface
     public function setToken(?string $token): SupermetricsApiRequest
     {
         $this->token = $token;
+        $this->data['sl_token'] = $token;
 
         return $this;
     }

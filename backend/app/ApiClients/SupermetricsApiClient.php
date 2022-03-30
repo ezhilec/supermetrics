@@ -13,7 +13,7 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
     private string $email;
     private string $name;
 
-    private const SESSION_TOKEN_NAME = 'supermetrics_token';
+    protected const SESSION_TOKEN_NAME = 'supermetrics_token';
 
     public function __construct()
     {
@@ -73,10 +73,8 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
             ->setUrl($this->getUrl($this->postsPath))
             ->setToken($this->getToken())
             ->setData([
-                'sl_token' => $this->getToken(),
                 'page' => $page,
             ]);
-
 
         return $this->tokenizedRequest($request);
     }
