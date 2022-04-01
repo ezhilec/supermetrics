@@ -35,6 +35,8 @@ services:
       - ./frontend:/app
     ports:
       - "4002:3000"
+    environment:
+      - WDS_SOCKET_PORT=4002
     networks:
       - supermetrics
 

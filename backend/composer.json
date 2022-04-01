@@ -4,7 +4,8 @@
   "type": "project",
   "require": {
     "php": "^8.0",
-    "ext-curl": "*"
+    "ext-curl": "*",
+    "ext-pdo": "*"
   },
   "autoload": {
     "psr-4": {
