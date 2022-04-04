@@ -1,8 +1,10 @@
 <?php
 
-namespace App\CacheClients;
+namespace App\CacheClients\Database;
 
-use \PDO;
+use App\CacheClients\CacheClientInterface;
+use PDO;
+use Exception;
 
 class DatabaseCacheClient implements CacheClientInterface
 {
@@ -13,21 +15,43 @@ class DatabaseCacheClient implements CacheClientInterface
         $this->db = Database::getInstance();
     }
 
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
     public function getPosts(int $limit, int $offset): array
     {
-        $sql = "SELECT * FROM `posts` ORDER BY `created_at` DESC LIMIT ? OFFSET ?;";
+        $sql = "SELECT * FROM posts ORDER BY created_at DESC LIMIT ? OFFSET ?;";
 
         $result = $this->db->prepare($sql);
         $result->execute([$limit, $offset]);
         return $result->fetchAll();
     }
 
+    /**
+     * @return int
+     */
+    public function getPostsCount(): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM posts;";
+
+        $result = $this->db->prepare($sql);
+        $result->execute();
+        return $result->fetchColumn();
+    }
+
+    /**
+     * @param array $data
+     * @return void
+     * @throws Exception
+     */
     public function setPosts(array $data): void
     {
-        $sql = "INSERT INTO `posts` 
-                (`slug`, `user_name`, `user_slug`, `message`, `type`, `created_at`) 
+        $sql = "INSERT INTO posts 
+                (slug, user_name, user_slug, message, type, created_at) 
                 VALUES (:slug, :user_name, :user_slug, :message, :type, :created_at)
-                ON DUPLICATE KEY UPDATE id = id;";
+                ON DUPLICATE KEY UPDATE slug = slug;";
 
         $result = $this->db->prepare($sql);
 
@@ -37,13 +61,19 @@ class DatabaseCacheClient implements CacheClientInterface
                 $result->execute($postDTO->toDatabaseArray());
             }
             $this->db->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->db->rollback();
             throw $e;
         }
     }
 
-    public function getUsers(int $limit, int $offset): array {
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return array
+     */
+    public function getUsers(int $limit, int $offset): array
+    {
         $sql = "SELECT MAX(user_name) as user_name, user_slug 
                 FROM posts 
                 GROUP BY user_slug 
@@ -55,9 +85,39 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchAll();
     }
 
+    /**
+     * @return int
+     */
+    public function getUsersCount(): int
+    {
+        $sql = "SELECT COUNT(DISTINCT user_slug) as total FROM posts;";
+
+        $result = $this->db->prepare($sql);
+        $result->execute();
+        return $result->fetchColumn();
+    }
+
+    public function getUser(string $slug): array
+    {
+        $sql = "SELECT user_name, user_slug 
+                FROM posts 
+                WHERE user_slug = ?
+                LIMIT 1;";
+
+        $result = $this->db->prepare($sql);
+        $result->execute([$slug]);
+        return $result->fetchAll()[0] ?? [];
+    }
+
+    /**
+     * @param string $slug
+     * @param int $limit
+     * @return array
+     */
     public function getUserStatistics(string $slug, int $limit): array
     {
         return [
+            'user' => $this->getUser($slug),
             'user_posts_count' => $this->getUserPostsCount($slug, $limit),
             'avg_message_length' => $this->getUserAvgMessageLength($slug, $limit),
             'posts_by_month' => $this->getUserPostsByMonth($slug, $limit),
@@ -65,6 +125,11 @@ class DatabaseCacheClient implements CacheClientInterface
         ];
     }
 
+    /**
+     * @param string $slug
+     * @param int $limit
+     * @return int
+     */
     private function getUserPostsCount(string $slug, int $limit): int
     {
         $sql = "
@@ -77,6 +142,11 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchColumn();
     }
 
+    /**
+     * @param string $slug
+     * @param int $limit
+     * @return int
+     */
     private function getUserAvgMessageLength(string $slug, int $limit): int
     {
         $sql = "
@@ -89,6 +159,11 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchColumn() ?? 0;
     }
 
+    /**
+     * @param string $slug
+     * @param int $limit
+     * @return array
+     */
     private function getUserPostsByMonth(string $slug, int $limit): array
     {
         $sql = "
@@ -102,6 +177,11 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchAll();
     }
 
+    /**
+     * @param string $slug
+     * @param int $limit
+     * @return array
+     */
     private function getUserMaxMessagePost(string $slug, int $limit): array
     {
         $sql = "

@@ -1,0 +1,28 @@
+.table {
+  display: table;
+  border-collapse: collapse;
+
+  &__row {
+    display: table-row;
+  }
+
+  &__head {
+    display: table-header-group;
+  }
+
+  &__cell, &__head {
+    border-bottom: 1px solid #e8e8e8;
+    display: table-cell;
+    padding: 10px 20px 10px 0;
+  }
+
+  &__head {
+    display: table-header-group;
+    font-family: $title-font;
+    font-weight: bold;
+  }
+
+  &__body {
+    display: table-row-group;
+  }
+}

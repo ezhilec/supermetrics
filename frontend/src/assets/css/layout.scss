@@ -1,0 +1,57 @@
+.supermetrics-app {
+  &__header {
+    display: flex;
+    justify-content: left;
+    background: $header-bg;
+    color: $header-color;
+    align-items: center;
+    padding: 0 20px;
+    height: 70px;
+  }
+
+  &__header-logo {
+    font-family: $title-font;
+    font-size: 20px;
+    margin-right: 50px;
+  }
+
+  &__header-menu {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  &__header-menu-item {
+    display: flex;
+  }
+
+  &__header-menu-link {
+    color: $header-color;
+    text-decoration: none;
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  &__header-menu-link_active,
+  &__header-menu-link:hover {
+    background: darken($header-bg, 8%);
+  }
+
+  &__content {
+    padding: 20px;
+
+    a {
+      color: $link-color;
+
+      &:hover {
+        color: darken($link-color, 30%);
+      }
+    }
+  }
+
+  &__navigation {
+    margin-bottom: 20px;
+  }
+}

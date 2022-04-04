@@ -1,14 +1,16 @@
 <?php
 
-namespace App\ApiClients;
+namespace App\ApiClients\Base;
 
-use \Exception;
+use Exception;
 
 abstract class BaseApiClient
 {
     private const SESSION_TOKEN_NAME = 'token';
 
     /**
+     * @param ApiRequestInterface $request
+     * @return array
      * @throws Exception
      */
     protected function baseRequest(ApiRequestInterface $request): array
@@ -51,19 +53,24 @@ abstract class BaseApiClient
 
         $curlResponse = curl_exec($curl);
         if (!$curlResponse) {
-            throw new \Exception("Can't connect to API");
+            throw new Exception("Can't connect to API");
         }
         curl_close($curl);
 
         return json_decode($curlResponse, true);
     }
 
+    /**
+     * @param ApiRequestInterface $request
+     * @return ApiResponseInterface
+     * @throws Exception
+     */
     protected function tokenizedRequest(ApiRequestInterface $request): ApiResponseInterface
     {
         if (!$request->getToken()) {
             $this->authRequest();
             if (!$this->getToken()) {
-                throw new \Exception("Can't login to API");
+                throw new Exception("Can't login to API");
             }
         }
 
@@ -77,23 +84,37 @@ abstract class BaseApiClient
             $response = $this->request($request);
         } elseif ($response->hasError()) {
             $message = $response->getError();
-            throw new \Exception("API connection error: $message");
+            throw new Exception("API connection error: $message");
         }
 
         return $response;
     }
 
+    /**
+     * @param string $token
+     * @return void
+     */
     protected function setToken(string $token): void
     {
         $_SESSION[static::SESSION_TOKEN_NAME] = $token;
     }
 
+    /**
+     * @return string|null
+     */
     protected function getToken(): ?string
     {
         return $_SESSION[static::SESSION_TOKEN_NAME] ?? null;
     }
 
+    /**
+     * @param ApiRequestInterface $request
+     * @return ApiResponseInterface
+     */
     abstract public function request(ApiRequestInterface $request): ApiResponseInterface;
 
+    /**
+     * @return ApiResponseInterface
+     */
     abstract public function authRequest(): ApiResponseInterface;
 }

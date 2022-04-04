@@ -2,8 +2,12 @@
 
 namespace App\DTOs;
 
+use DateTime;
+
 class PostDTO
 {
+    use CollectionFromDatabaseTrait;
+
     public string $id;
     public string $from_name;
     public string $from_id;
@@ -11,6 +15,10 @@ class PostDTO
     public string $type;
     public string $created_at;
 
+    /**
+     * @param array $data
+     * @return $this
+     */
     public function fromSupermetricsApi(array $data): PostDTO
     {
         $this->id = $data['id'];
@@ -23,18 +31,32 @@ class PostDTO
         return $this;
     }
 
+    public static function collectionFromSupermetricsAPI(array $array): array
+    {
+        return array_map(fn($item) => (new self())->fromSupermetricsApi($item), $array);
+    }
+
+    /**
+     * @param array $data
+     * @return $this
+     */
     public function fromDatabase(array $data): PostDTO
     {
+        $createdAt = DateTime::createFromFormat('Y-m-d H:i:s', $data['created_at']);
+
         $this->id = $data['slug'];
         $this->from_name = $data['user_name'];
         $this->from_id = $data['user_slug'];
         $this->message = $data['message'];
         $this->type = $data['type'];
-        $this->created_at = $data['created_at'];
+        $this->created_at = $createdAt->format('d.m.Y H:i:s');
 
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function toDatabaseArray(): array
     {
         return [

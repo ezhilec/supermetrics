@@ -1,9 +1,11 @@
 FROM php:8.0-fpm
 
-#RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 RUN docker-php-ext-install pdo pdo_mysql
+RUN docker-php-ext-install opcache
 
 WORKDIR /app/
+
+COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 

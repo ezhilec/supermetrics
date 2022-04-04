@@ -1,0 +1,17 @@
+.user {
+  &__statistics-item {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  &__statistics-item-name {
+    flex-basis: 20%;
+    margin-right: 30px;
+    font-family: $title-font;
+    text-align: right;
+  }
+
+  &__statistics-item-value {
+    flex-basis: 80%;
+  }
+}

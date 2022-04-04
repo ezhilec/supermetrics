@@ -1,6 +1,6 @@
 <?php
 
-namespace App\ApiClients;
+namespace App\ApiClients\Base;
 
 interface ApiClientInterface
 {

@@ -10,8 +10,7 @@ session_start();
 $url = $_SERVER['REQUEST_URI'];
 
 try {
-    $configService = new ConfigService();
-    $routes = $configService->get('routes');
+    $routes = ConfigService::getInstance()->get('routes');
 
     $routeService = new RouteService();
 

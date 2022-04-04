@@ -1,8 +1,13 @@
 <?php
 
-namespace App\ApiClients;
+namespace App\ApiClients\Supermetrics;
 
+use App\ApiClients\Base\ApiClientInterface;
+use App\ApiClients\Base\ApiRequestInterface;
+use App\ApiClients\Base\ApiResponseInterface;
+use App\ApiClients\Base\BaseApiClient;
 use App\Services\ConfigService;
+use Exception;
 
 class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
 {
@@ -17,7 +22,7 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
 
     public function __construct()
     {
-        $apiConfigs = (new ConfigService())->get('supermetrics_api');
+        $apiConfigs = ConfigService::getInstance()->get('supermetrics_api');
 
         $this->host = $apiConfigs['host'];
         $this->authPath = $apiConfigs['auth_path'];
@@ -27,11 +32,20 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
         $this->name = $apiConfigs['name'];
     }
 
+    /**
+     * @param string $path
+     * @return string
+     */
     private function getUrl(string $path): string
     {
         return sprintf('%s%s', $this->host, $path);
     }
 
+    /**
+     * @param ApiRequestInterface $request
+     * @return ApiResponseInterface
+     * @throws Exception
+     */
     public function request(ApiRequestInterface $request): ApiResponseInterface
     {
         $data = $this->baseRequest($request);
@@ -41,6 +55,10 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
         return $response;
     }
 
+    /**
+     * @return ApiResponseInterface
+     * @throws Exception
+     */
     public function authRequest(): ApiResponseInterface
     {
         $request = new SupermetricsApiRequest();
@@ -59,13 +77,18 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
         if ($response->hasToken()) {
             $this->setToken($response->getToken());
         } else {
-            throw new \Exception("Can't login to Supermetrics API");
+            throw new Exception("Can't login to Supermetrics API");
         }
 
         return $response;
     }
 
-    public function getPosts($page = 1): SupermetricsApiResponse
+    /**
+     * @param int $page
+     * @return SupermetricsApiResponse
+     * @throws Exception
+     */
+    public function getPosts(int $page = 1): SupermetricsApiResponse
     {
         $request = new SupermetricsApiRequest();
         $request

@@ -1,6 +1,8 @@
 <?php
 
-namespace App\ApiClients;
+namespace App\ApiClients\Supermetrics;
+
+use App\ApiClients\Base\ApiRequestInterface;
 
 class SupermetricsApiRequest implements ApiRequestInterface
 {
@@ -95,7 +97,7 @@ class SupermetricsApiRequest implements ApiRequestInterface
     }
 
     /**
-     * @param bool $token
+     * @param string|null $token
      * @return $this
      */
     public function setToken(?string $token): SupermetricsApiRequest

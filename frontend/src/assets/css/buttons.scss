@@ -1,0 +1,12 @@
+.btn {
+    border: 1px solid #e8e8e8;
+    padding: 5px 10px;
+    border-radius: 5px;
+    min-width: 15px;
+    cursor: pointer;
+
+  &:hover {
+    background: $link-color;
+    color: $main-bg !important;
+  }
+}

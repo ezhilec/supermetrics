@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'allow_connect' => false,
     'host' => 'https://api.supermetrics.com',
     'auth_path' => '/assignment/register',
     'posts_path' => '/assignment/posts',

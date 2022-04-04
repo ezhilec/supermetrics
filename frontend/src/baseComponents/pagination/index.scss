@@ -1,0 +1,40 @@
+.pagination {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 20px;
+
+  &__item {
+    border: 1px solid #e8e8e8;
+    padding: 10px;
+    border-radius: 50%;
+    min-width: 15px;
+    text-align: center;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+
+  &__item_active {
+    background: #6577E7;
+    color: #ffffff;
+  }
+
+  &__item_disabled {
+    color: #e8e8e8;
+    cursor: default;
+  }
+
+  &__item:hover {
+    background: #e8e8e8;
+  }
+
+  &__item_disabled:hover {
+    background: inherit;
+  }
+
+  &__item-space {
+    padding: 10px;
+    margin-right: 10px;
+  }
+
+}
