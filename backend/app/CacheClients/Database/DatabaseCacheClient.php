@@ -3,13 +3,16 @@
 namespace App\CacheClients\Database;
 
 use App\CacheClients\CacheClientInterface;
-use PDO;
 use Exception;
+use PDO;
 
 class DatabaseCacheClient implements CacheClientInterface
 {
     private PDO $db;
 
+    /**
+     * @throws Exception
+     */
     public function __construct()
     {
         $this->db = Database::getInstance();
@@ -29,6 +32,11 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchAll();
     }
 
+    public function clearPosts(): void
+    {
+        $this->db->prepare("DELETE FROM posts")->execute();
+    }
+
     /**
      * @return int
      */
@@ -43,10 +51,11 @@ class DatabaseCacheClient implements CacheClientInterface
 
     /**
      * @param array $data
+     * @param bool $useTransactions
      * @return void
      * @throws Exception
      */
-    public function setPosts(array $data): void
+    public function setPosts(array $data, bool $useTransactions = true): void
     {
         $sql = "INSERT INTO posts 
                 (slug, user_name, user_slug, message, type, created_at) 
@@ -55,15 +64,21 @@ class DatabaseCacheClient implements CacheClientInterface
 
         $result = $this->db->prepare($sql);
 
-        try {
-            $this->db->beginTransaction();
+        if ($useTransactions) {
+            try {
+                $this->db->beginTransaction();
+                foreach ($data as $postDTO) {
+                    $result->execute($postDTO->toDatabaseArray());
+                }
+                $this->db->commit();
+            } catch (Exception $e) {
+                $this->db->rollback();
+                throw $e;
+            }
+        } else {
             foreach ($data as $postDTO) {
                 $result->execute($postDTO->toDatabaseArray());
             }
-            $this->db->commit();
-        } catch (Exception $e) {
-            $this->db->rollback();
-            throw $e;
         }
     }
 
@@ -97,18 +112,6 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchColumn();
     }
 
-    public function getUser(string $slug): array
-    {
-        $sql = "SELECT user_name, user_slug 
-                FROM posts 
-                WHERE user_slug = ?
-                LIMIT 1;";
-
-        $result = $this->db->prepare($sql);
-        $result->execute([$slug]);
-        return $result->fetchAll()[0] ?? [];
-    }
-
     /**
      * @param string $slug
      * @param int $limit
@@ -123,6 +126,34 @@ class DatabaseCacheClient implements CacheClientInterface
             'posts_by_month' => $this->getUserPostsByMonth($slug, $limit),
             'max_message_post' => $this->getUserMaxMessagePost($slug, $limit),
         ];
+    }
+
+    public function getUser(string $slug): array
+    {
+        $sql = "SELECT user_name, user_slug 
+                FROM posts 
+                WHERE user_slug = ?
+                LIMIT 1;";
+
+        $result = $this->db->prepare($sql);
+        $result->execute([$slug]);
+        return $result->fetchAll()[0] ?? [];
+    }
+
+    /**
+     * @return void
+     */
+    public function beforeTests(): void
+    {
+        $this->db->beginTransaction();
+    }
+
+    /**
+     * @return void
+     */
+    public function afterTests(): void
+    {
+        $this->db->rollback();
     }
 
     /**

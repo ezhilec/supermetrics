@@ -12,10 +12,6 @@ class ConfigService
     {
     }
 
-    private function __clone()
-    {
-    }
-
     /**
      * @return ConfigService
      */
@@ -31,6 +27,21 @@ class ConfigService
     }
 
     /**
+     * @return void
+     */
+    private function init(): void
+    {
+        $rootDirectory = '/app';
+
+        $this->configs = [
+            'routes' => include $rootDirectory . '/config/routes.php',
+            'supermetrics_api' => include $rootDirectory . '/config/supermetrics_api.php',
+            'database' => include $rootDirectory . '/config/database.php',
+            'posts' => include $rootDirectory . '/config/posts.php'
+        ];
+    }
+
+    /**
      * @param string $key
      * @return array
      */
@@ -39,18 +50,7 @@ class ConfigService
         return $this->configs[$key] ?? [];
     }
 
-    /**
-     * @return void
-     */
-    private function init(): void
+    private function __clone()
     {
-        $rootDirectory = $_SERVER['DOCUMENT_ROOT'];
-
-        $this->configs = [
-            'routes' => include $rootDirectory . '/config/routes.php',
-            'supermetrics_api' => include $rootDirectory . '/config/supermetrics_api.php',
-            'database' => include $rootDirectory . '/config/database.php',
-            'posts' => include $rootDirectory . '/config/posts.php'
-        ];
     }
 }

@@ -66,8 +66,7 @@ class RouteService
         foreach ($this->routes as $route => $routeOptions) {
             $pathParams = [];
             if (preg_match($route, $this->path, $pathParams)) {
-
-                $pathParams = array_filter($pathParams, fn($key) => is_string($key), ARRAY_FILTER_USE_KEY);
+                $pathParams = array_filter($pathParams, fn($key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
                 return [
                     $routeOptions['name'],
                     $routeOptions['method'],

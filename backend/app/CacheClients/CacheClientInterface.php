@@ -11,4 +11,8 @@ interface CacheClientInterface
     public function getUsers(int $limit, int $offset): array;
 
     public function getUserStatistics(string $slug, int $limit): array;
+
+    public function beforeTests(): void;
+
+    public function afterTests(): void;
 }

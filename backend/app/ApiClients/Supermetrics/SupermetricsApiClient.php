@@ -11,14 +11,13 @@ use Exception;
 
 class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
 {
+    protected const SESSION_TOKEN_NAME = 'supermetrics_token';
     private string $host;
     private string $authPath;
     private string $postsPath;
     private string $clientId;
     private string $email;
     private string $name;
-
-    protected const SESSION_TOKEN_NAME = 'supermetrics_token';
 
     public function __construct()
     {
@@ -30,29 +29,6 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
         $this->clientId = $apiConfigs['client_id'];
         $this->email = $apiConfigs['email'];
         $this->name = $apiConfigs['name'];
-    }
-
-    /**
-     * @param string $path
-     * @return string
-     */
-    private function getUrl(string $path): string
-    {
-        return sprintf('%s%s', $this->host, $path);
-    }
-
-    /**
-     * @param ApiRequestInterface $request
-     * @return ApiResponseInterface
-     * @throws Exception
-     */
-    public function request(ApiRequestInterface $request): ApiResponseInterface
-    {
-        $data = $this->baseRequest($request);
-
-        $response = new SupermetricsApiResponse($data);
-
-        return $response;
     }
 
     /**
@@ -81,6 +57,27 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
         }
 
         return $response;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    private function getUrl(string $path): string
+    {
+        return sprintf('%s%s', $this->host, $path);
+    }
+
+    /**
+     * @param ApiRequestInterface $request
+     * @return ApiResponseInterface
+     * @throws Exception
+     */
+    public function request(ApiRequestInterface $request): ApiResponseInterface
+    {
+        $data = $this->baseRequest($request);
+
+        return new SupermetricsApiResponse($data);
     }
 
     /**

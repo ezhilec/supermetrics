@@ -6,9 +6,9 @@ use App\ApiClients\Base\ApiResponseInterface;
 
 class SupermetricsApiResponse implements ApiResponseInterface
 {
-    private ?array $data = null;
+    private ?array $data;
 
-    private ?array $error = null;
+    private ?array $error;
 
     public function __construct(array $data)
     {
@@ -45,18 +45,6 @@ class SupermetricsApiResponse implements ApiResponseInterface
     }
 
     /**
-     * @return string
-     */
-    public function getError(): string
-    {
-        if (isset($this->error['message'])) {
-            return $this->error['message'];
-        }
-
-        return 'Undefined error';
-    }
-
-    /**
      * @return bool
      */
     public function hasError(): bool
@@ -74,5 +62,17 @@ class SupermetricsApiResponse implements ApiResponseInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function getError(): string
+    {
+        if (isset($this->error['message'])) {
+            return $this->error['message'];
+        }
+
+        return 'Undefined error';
     }
 }

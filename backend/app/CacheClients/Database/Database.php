@@ -3,18 +3,15 @@
 namespace App\CacheClients\Database;
 
 use App\Services\ConfigService;
-use PDO;
+use PDOException;
 use Exception;
+use PDO;
 
 class Database
 {
     protected static ?PDO $instance = null;
 
     private function __construct()
-    {
-    }
-
-    private function __clone()
     {
     }
 
@@ -36,14 +33,19 @@ class Database
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
                 PDO::ATTR_EMULATE_PREPARES => false,
             ];
-            $pdo = new PDO($dsn, $config['user'], $config['password'], $options);
 
-            if (!$pdo) {
+            try {
+            $pdo = new PDO($dsn, $config['user'], $config['password'], $options);
+            } catch (PDOException $e) {
                 throw new Exception("Can't connect to database");
             }
 
             self::$instance = $pdo;
         }
         return self::$instance;
+    }
+
+    private function __clone()
+    {
     }
 }

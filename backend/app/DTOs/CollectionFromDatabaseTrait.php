@@ -6,6 +6,6 @@ trait CollectionFromDatabaseTrait
 {
     public static function collectionFromDatabase(array $array): array
     {
-        return array_map(fn($item) => (new self())->fromDatabase($item), $array);
+        return array_map(fn($item): self => (new self())->fromDatabase($item), $array);
     }
 }

@@ -3,9 +3,10 @@ FROM php:8.0-fpm
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install opcache
 
-WORKDIR /app/
+RUN apt-get update && apt-get install -y \
+    git
 
-COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+WORKDIR /app/
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
@@ -13,4 +14,4 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 COPY composer.json /app/composer.json
 
-RUN composer install --prefer-source --no-interaction
+RUN composer install --no-interaction

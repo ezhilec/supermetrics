@@ -32,7 +32,7 @@ class UserStatisticsDTO
     /**
      * @return array
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'user' => $this->user,

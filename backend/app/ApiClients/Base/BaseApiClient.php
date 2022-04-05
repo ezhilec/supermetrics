@@ -91,18 +91,14 @@ abstract class BaseApiClient
     }
 
     /**
-     * @param string $token
-     * @return void
+     * @return ApiResponseInterface
      */
-    protected function setToken(string $token): void
-    {
-        $_SESSION[static::SESSION_TOKEN_NAME] = $token;
-    }
+    abstract public function authRequest(): ApiResponseInterface;
 
     /**
      * @return string|null
      */
-    protected function getToken(): ?string
+    public function getToken(): ?string
     {
         return $_SESSION[static::SESSION_TOKEN_NAME] ?? null;
     }
@@ -114,7 +110,11 @@ abstract class BaseApiClient
     abstract public function request(ApiRequestInterface $request): ApiResponseInterface;
 
     /**
-     * @return ApiResponseInterface
+     * @param string $token
+     * @return void
      */
-    abstract public function authRequest(): ApiResponseInterface;
+    protected function setToken(string $token): void
+    {
+        $_SESSION[static::SESSION_TOKEN_NAME] = $token;
+    }
 }

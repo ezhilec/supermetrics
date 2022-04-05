@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\ApiClients\Base\ApiClientInterface;
+use App\ApiClients\Supermetrics\SupermetricsApiClient;
 use App\CacheClients\CacheClientInterface;
 use App\CacheClients\Database\DatabaseCacheClient;
 use App\Requests\UserItemRequest;
@@ -10,7 +11,6 @@ use App\Requests\UserRequest;
 use App\Resources\UsersResource;
 use App\Services\ConfigService;
 use App\Services\PostService;
-use App\ApiClients\Supermetrics\SupermetricsApiClient;
 use App\Views\JsonView;
 
 class UserController

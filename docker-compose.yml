@@ -22,6 +22,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
+      - supermetrics_vendor:/app/vendor
       - ./backend:/app
     networks:
       - supermetrics
@@ -59,6 +60,7 @@ services:
 
 volumes:
   supermetrics_db_data:
+  supermetrics_vendor:
 
 networks:
   supermetrics:

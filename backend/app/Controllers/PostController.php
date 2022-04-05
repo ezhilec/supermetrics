@@ -3,12 +3,12 @@
 namespace App\Controllers;
 
 use App\ApiClients\Base\ApiClientInterface;
+use App\ApiClients\Supermetrics\SupermetricsApiClient;
 use App\CacheClients\CacheClientInterface;
 use App\CacheClients\Database\DatabaseCacheClient;
 use App\Requests\PostRequest;
 use App\Resources\PostsResource;
 use App\Services\PostService;
-use App\ApiClients\Supermetrics\SupermetricsApiClient;
 use App\Views\JsonView;
 
 class PostController
