@@ -88,4 +88,4 @@ User.propTypes = {
   isLoading: PropTypes.bool.isRequired,
 }
 
-export default User
+export default React.memo(User)

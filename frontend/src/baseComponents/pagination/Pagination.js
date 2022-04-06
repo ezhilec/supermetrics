@@ -16,7 +16,6 @@ function Pagination (props) {
     onPageChange(page)
   }
 
-  //const pagesList = useMemo(() => {
   const pagesList = () => {
     const totalPages = Math.ceil(totalItems / itemsPerPage)
 
@@ -60,12 +59,6 @@ function Pagination (props) {
     }
 
     return pagesArray
-    // }, [
-    //   currentPage,
-    //   itemsPerPage,
-    //   totalItems,
-    //   maxSiblings
-    // ])
   }
 
   const lastPage = useMemo(() => {

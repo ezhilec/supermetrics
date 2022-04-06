@@ -63,4 +63,4 @@ Users.propTypes = {
   handleSetPage: PropTypes.func.isRequired
 }
 
-export default Users
+export default React.memo(Users)

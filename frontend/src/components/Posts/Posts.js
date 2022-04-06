@@ -72,4 +72,4 @@ Posts.propTypes = {
   isShowPagination: PropTypes.bool.isRequired
 }
 
-export default Posts
+export default React.memo(Posts)
