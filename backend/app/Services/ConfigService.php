@@ -12,10 +12,14 @@ class ConfigService
     {
     }
 
+    private function __clone()
+    {
+    }
+
     /**
      * @return ConfigService
      */
-    public static function getInstance(): ConfigService
+    public static function instance(): ConfigService
     {
         if (!self::$instance) {
             self::$instance = new ConfigService();
@@ -31,26 +35,28 @@ class ConfigService
      */
     private function init(): void
     {
-        $rootDirectory = '/app';
+        $rootDirectory = "/app";
 
         $this->configs = [
-            'routes' => include $rootDirectory . '/config/routes.php',
-            'supermetrics_api' => include $rootDirectory . '/config/supermetrics_api.php',
-            'database' => include $rootDirectory . '/config/database.php',
-            'posts' => include $rootDirectory . '/config/posts.php'
+            "routes" => include "$rootDirectory/config/routes.php",
+            "supermetrics_api" => include "$rootDirectory/config/supermetrics_api.php",
+            "database" => include "$rootDirectory/config/database.php",
+            "posts" => include "$rootDirectory/config/posts.php",
         ];
     }
 
     /**
-     * @param string $key
-     * @return array
+     * @param string $path
+     * @return mixed
      */
-    public function get(string $key): array
+    public function get(string $path): mixed
     {
-        return $this->configs[$key] ?? [];
-    }
+        [$configName, $key] = explode(".", $path . ".");
 
-    private function __clone()
-    {
+        if (!$key) {
+            return $this->configs[$configName];
+        }
+
+        return $this->configs[$configName][$key];
     }
 }

@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'fetch_limit' => 1000,
+    "fetch_limit" => 1000,
 ];

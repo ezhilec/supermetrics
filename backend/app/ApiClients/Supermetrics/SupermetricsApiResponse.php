@@ -12,8 +12,8 @@ class SupermetricsApiResponse implements ApiResponseInterface
 
     public function __construct(array $data)
     {
-        $this->data = $data['data'] ?? null;
-        $this->error = $data['error'] ?? null;
+        $this->data = $data["data"] ?? null;
+        $this->error = $data["error"] ?? null;
     }
 
     /**
@@ -37,8 +37,8 @@ class SupermetricsApiResponse implements ApiResponseInterface
      */
     public function getToken(): ?string
     {
-        if (isset($this->data['sl_token'])) {
-            return $this->data['sl_token'];
+        if (isset($this->data["sl_token"])) {
+            return $this->data["sl_token"];
         }
 
         return null;
@@ -57,7 +57,7 @@ class SupermetricsApiResponse implements ApiResponseInterface
      */
     public function hasTokenError(): bool
     {
-        if ($this->getError() === 'Invalid SL Token') {
+        if ($this->getError() === "Invalid SL Token") {
             return true;
         }
 
@@ -69,10 +69,10 @@ class SupermetricsApiResponse implements ApiResponseInterface
      */
     public function getError(): string
     {
-        if (isset($this->error['message'])) {
-            return $this->error['message'];
+        if (isset($this->error["message"])) {
+            return $this->error["message"];
         }
 
-        return 'Undefined error';
+        return "Undefined error";
     }
 }

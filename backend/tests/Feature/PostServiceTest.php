@@ -17,44 +17,44 @@ class PostServiceTest extends TestCase
     {
         $testPosts = [
             [
-                'slug' => '1',
-                'user_name' => 'user1',
-                'user_slug' => 'user1',
-                'message' => '123',
-                'type' => '',
-                'created_at' => date('Y-m-d H:i:s'),
+                "slug" => "1",
+                "user_name" => "user1",
+                "user_slug" => "user1",
+                "message" => "123",
+                "type" => "",
+                "created_at" => date("Y-m-d H:i:s"),
             ],
             [
-                'slug' => '2',
-                'user_name' => 'user2',
-                'user_slug' => 'user2',
-                'message' => '1234',
-                'type' => '',
-                'created_at' => date('Y-m-d H:i:s'),
+                "slug" => "2",
+                "user_name" => "user2",
+                "user_slug" => "user2",
+                "message" => "1234",
+                "type" => "",
+                "created_at" => date("Y-m-d H:i:s"),
             ],
             [
-                'slug' => '3',
-                'user_name' => 'user1',
-                'user_slug' => 'user1',
-                'message' => '12345',
-                'type' => '',
-                'created_at' => date('Y-m-d H:i:s'),
+                "slug" => "3",
+                "user_name" => "user1",
+                "user_slug" => "user1",
+                "message" => "12345",
+                "type" => "",
+                "created_at" => date("Y-m-d H:i:s"),
             ],
             [
-                'slug' => '4',
-                'user_name' => 'user1',
-                'user_slug' => 'user1',
-                'message' => '123456',
-                'type' => '',
-                'created_at' => date('Y-m-d H:i:s'),
+                "slug" => "4",
+                "user_name" => "user1",
+                "user_slug" => "user1",
+                "message" => "123456",
+                "type" => "",
+                "created_at" => date("Y-m-d H:i:s"),
             ],
             [
-                'slug' => '5',
-                'user_name' => 'user1',
-                'user_slug' => 'user1',
-                'message' => '12',
-                'type' => '',
-                'created_at' => date('Y-m-d H:i:s'),
+                "slug" => "5",
+                "user_name" => "user1",
+                "user_slug" => "user1",
+                "message" => "12",
+                "type" => "",
+                "created_at" => date("Y-m-d H:i:s"),
             ]
         ];
 
@@ -70,7 +70,7 @@ class PostServiceTest extends TestCase
 
         $cacheClient->setPosts($testPosts, false);
 
-        $userName = 'user1';
+        $userName = "user1";
 
         $postService = new PostService($cacheClient);
         $result = $postService->getUserStatistics($userName, 1000);
@@ -85,8 +85,8 @@ class PostServiceTest extends TestCase
         $this->assertEquals($result["avg_message_length"], $expectedAvgMessageLength);
 
         $this->assertEqualsCanonicalizing([
-            'month' => date('m.Y'),
-            'posts_count' => $expectedUserPostsCount
+            "month" => date("m.Y"),
+            "posts_count" => $expectedUserPostsCount
         ], $result["posts_by_month"][0]);
 
         $maxPostIndex = array_search(max($messageLengthArray), $messageLengthArray);

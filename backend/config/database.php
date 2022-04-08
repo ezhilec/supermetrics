@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'host' => 'supermetrics-database',
-    'database' => 'supermetrics',
-    'user' => 'root',
-    'password' => 'root',
-    'charset' => 'utf8'
+    "host" => getenv("database_host"),
+    "database" => getenv("database_database"),
+    "user" => getenv("database_user"),
+    "password" => getenv("database_password"),
+    "charset" => "utf8"
 ];

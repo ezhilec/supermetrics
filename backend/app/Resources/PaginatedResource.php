@@ -59,10 +59,10 @@ class PaginatedResource
     public function toArray(): array
     {
         return [
-            'list' => $this->list,
-            'page' => $this->page,
-            'perPage' => $this->perPage,
-            'total' => $this->total
+            "list" => $this->list,
+            "page" => $this->page,
+            "perPage" => $this->perPage,
+            "total" => $this->total
         ];
     }
 }

@@ -15,14 +15,14 @@ class SupermetricsApiClientTest extends TestCase
     public function testTokenSaved(): void
     {
         $client = $this->getMockBuilder(SupermetricsApiClient::class)
-            ->onlyMethods(['baseRequest'])
+            ->onlyMethods(["baseRequest"])
             ->getMock();
 
-        $token = '123';
+        $token = "123";
 
         $client->expects($this->once())
-            ->method('baseRequest')
-            ->willReturn(['data' => ['sl_token' => $token]]);
+            ->method("baseRequest")
+            ->willReturn(["data" => ["sl_token" => $token]]);
 
         $client->authRequest();
 
@@ -36,12 +36,12 @@ class SupermetricsApiClientTest extends TestCase
     public function testErrorIfNoToken(): void
     {
         $client = $this->getMockBuilder(SupermetricsApiClient::class)
-            ->onlyMethods(['baseRequest'])
+            ->onlyMethods(["baseRequest"])
             ->getMock();
 
         $client->expects($this->once())
-            ->method('baseRequest')
-            ->willReturn(['no' => 'token']);
+            ->method("baseRequest")
+            ->willReturn(["no" => "token"]);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("Can't login to Supermetrics API");

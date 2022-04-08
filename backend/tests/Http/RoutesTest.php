@@ -7,42 +7,42 @@ class RoutesTest extends TestCase
 {
     public function testPostsRoute()
     {
-        $result = $this->getUrl('supermetrics-nginx/posts');
+        $result = $this->getUrl("supermetrics-nginx/posts");
 
-        $httpCode = $result['code'];
-        $response = $result['response'];
+        $httpCode = $result["code"];
+        $response = $result["response"];
 
         $this->assertEquals(200, $httpCode);
 
         $this->assertEqualsCanonicalizing([
-            'success',
-            'data',
+            "success",
+            "data",
         ], array_keys($response));
 
         $this->assertEqualsCanonicalizing([
-            'list',
-            'page',
-            'perPage',
-            'total',
-        ], array_keys($response['data']));
+            "list",
+            "page",
+            "perPage",
+            "total",
+        ], array_keys($response["data"]));
 
-        $firstPost = $response['data']['list'][0] ?? null;
+        $firstPost = $response["data"]["list"][0] ?? null;
 
         $this->assertEqualsCanonicalizing([
-            'id',
-            'from_name',
-            'from_id',
-            'message',
-            'type',
-            'created_at'
+            "id",
+            "from_name",
+            "from_id",
+            "message",
+            "type",
+            "created_at"
         ], array_keys($firstPost));
     }
 
     public function testWrongRoute()
     {
-        $result = $this->getUrl('supermetrics-nginx/wrong!');
+        $result = $this->getUrl("supermetrics-nginx/wrong!");
 
-        $httpCode = $result['code'];
+        $httpCode = $result["code"];
 
         $this->assertEquals(404, $httpCode);
     }
@@ -57,8 +57,8 @@ class RoutesTest extends TestCase
 
         curl_close($ch);
         return [
-            'code' => $httpCode,
-            'response' => json_decode($response, true)
+            "code" => $httpCode,
+            "response" => json_decode($response, true)
         ];
     }
 }

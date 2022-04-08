@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Providers\ServiceProvider;
 use Exception;
 
 class RouteService
 {
-    private string $path = '';
+    private string $path = "";
     private array $params = [];
     private array $routes = [];
 
@@ -17,11 +18,11 @@ class RouteService
     public function parseUrl(string $url): RouteService
     {
         $urlArray = parse_url($url);
-        $path = $urlArray['path'];
+        $path = $urlArray["path"];
         $params = [];
 
-        if (isset($urlArray['query'])) {
-            parse_str($urlArray['query'], $params);
+        if (isset($urlArray["query"])) {
+            parse_str($urlArray["query"], $params);
         }
 
         $this->path = $path;
@@ -47,14 +48,22 @@ class RouteService
      */
     public function executeController(): void
     {
-        [$controllerName, $method, $pathParams] = $this->findController();
-        $fullControllerName = 'App\\Controllers\\' . $controllerName;
+        [
+            $controllerName,
+            $controllerBindings,
+            $method,
+            $pathParams,
+        ] = $this->findController();
+
+        $fullControllerName = "App\\Controllers\\" . $controllerName;
 
         if (!class_exists($fullControllerName)) {
-            throw new Exception('Controller not found');
+            throw new Exception("Controller not found");
         }
 
-        $controller = new $fullControllerName();
+        $bindingsInstances = ServiceProvider::getBindings($controllerBindings);
+
+        $controller = new $fullControllerName(...$bindingsInstances);
         call_user_func_array([$controller, $method], [array_merge($this->params, $pathParams)]);
     }
 
@@ -68,13 +77,14 @@ class RouteService
             if (preg_match($route, $this->path, $pathParams)) {
                 $pathParams = array_filter($pathParams, fn($key): bool => is_string($key), ARRAY_FILTER_USE_KEY);
                 return [
-                    $routeOptions['name'],
-                    $routeOptions['method'],
+                    $routeOptions["name"],
+                    $routeOptions["bindings"] ?? [],
+                    $routeOptions["method"],
                     $pathParams
                 ];
             }
         }
 
-        return ['ErrorController', 'show404', []];
+        return ["ErrorController", "show404", []];
     }
 }

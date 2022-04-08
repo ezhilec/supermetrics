@@ -3,9 +3,7 @@
 namespace App\Controllers;
 
 use App\ApiClients\Base\ApiClientInterface;
-use App\ApiClients\Supermetrics\SupermetricsApiClient;
 use App\CacheClients\CacheClientInterface;
-use App\CacheClients\Database\DatabaseCacheClient;
 use App\Requests\UserItemRequest;
 use App\Requests\UserRequest;
 use App\Resources\UsersResource;
@@ -15,15 +13,13 @@ use App\Views\JsonView;
 
 class UserController
 {
-    private CacheClientInterface $cacheClient;
-    private ApiClientInterface $apiClient;
     private PostService $postsService;
 
-    public function __construct()
-    {
-        $this->cacheClient = new DatabaseCacheClient();
-        $this->apiClient = new SupermetricsApiClient();
-        $this->postsService = new PostService($this->cacheClient, $this->apiClient);
+    public function __construct(
+        CacheClientInterface $cacheClient,
+        ApiClientInterface $apiClient
+    ) {
+        $this->postsService = new PostService($cacheClient, $apiClient);
     }
 
     /**
@@ -44,7 +40,7 @@ class UserController
             ->setTotal($count)
             ->toArray();
 
-        JsonView::render($result);
+        JsonView::render(true, $result);
     }
 
     /**
@@ -55,10 +51,10 @@ class UserController
     {
         $request = new UserItemRequest($params);
 
-        $postsLimit = ConfigService::getInstance()->get('posts')['fetch_limit'];
+        $postsLimit = ConfigService::instance()->get("posts.fetch_limit");
 
         $userStatistics = $this->postsService->getUserStatistics($request->slug, $postsLimit);
 
-        JsonView::render($userStatistics);
+        JsonView::render(true, $userStatistics);
     }
 }

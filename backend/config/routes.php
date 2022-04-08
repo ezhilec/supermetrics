@@ -1,20 +1,23 @@
 <?php
 
 return [
-    '/^\/posts$/' => [
-        'name' => 'PostController',
-        'method' => 'index'
+    "/^\/posts$/" => [
+        "name" => "PostController",
+        "bindings" => ["cacheClient", "apiClient"],
+        "method" => "index"
     ],
-    '/^\/users\/(?<userId>.+)$/' => [
-        'name' => 'UserController',
-        'method' => 'show'
+    "/^\/users\/(?<userId>.+)$/" => [
+        "name" => "UserController",
+        "bindings" => ["cacheClient", "apiClient"],
+        "method" => "show"
     ],
-    '/^\/users$/' => [
-        'name' => 'UserController',
-        'method' => 'index'
+    "/^\/users$/" => [
+        "name" => "UserController",
+        "bindings" => ["cacheClient", "apiClient"],
+        "method" => "index"
     ],
-    '/^.*$/' => [
-        'name' => 'ErrorController',
-        'method' => 'show404'
+    "/^.*$/" => [
+        "name" => "ErrorController",
+        "method" => "show404"
     ]
 ];

@@ -9,12 +9,12 @@ class PaginatedRequest
 
     public function __construct($params)
     {
-        if (isset($params['page'])) {
-            $this->page = $params['page'];
+        if (isset($params["page"])) {
+            $this->page = $params["page"];
         }
 
-        if (isset($params['perPage'])) {
-            $this->perPage = $params['perPage'];
+        if (isset($params["perPage"])) {
+            $this->perPage = $params["perPage"];
         }
     }
 }

@@ -1,7 +1,9 @@
 <?php
 
+use App\Services\EnvService;
 use App\Services\ConfigService;
 use App\Services\RouteService;
+use App\Controllers\ErrorController;
 
 require(__DIR__ . '/vendor/autoload.php');
 
@@ -10,7 +12,9 @@ session_start();
 $url = $_SERVER['REQUEST_URI'];
 
 try {
-    $routes = ConfigService::getInstance()->get('routes');
+    EnvService::init();
+
+    $routes = ConfigService::instance()->get("routes");
 
     $routeService = new RouteService();
 
@@ -19,7 +23,7 @@ try {
         ->setRoutes($routes)
         ->executeController();
 
-}  catch (\Throwable $e) {
-    echo $e->getMessage();
+}  catch (Throwable $e) {
+    (new ErrorController())->exceptionError($e->getMessage());
 }
 

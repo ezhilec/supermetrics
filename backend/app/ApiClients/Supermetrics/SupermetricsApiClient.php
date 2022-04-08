@@ -11,7 +11,7 @@ use Exception;
 
 class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
 {
-    protected const SESSION_TOKEN_NAME = 'supermetrics_token';
+    protected const SESSION_TOKEN_NAME = "supermetrics_token";
     private string $host;
     private string $authPath;
     private string $postsPath;
@@ -21,14 +21,14 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
 
     public function __construct()
     {
-        $apiConfigs = ConfigService::getInstance()->get('supermetrics_api');
+        $apiConfigs = ConfigService::instance()->get("supermetrics_api");
 
-        $this->host = $apiConfigs['host'];
-        $this->authPath = $apiConfigs['auth_path'];
-        $this->postsPath = $apiConfigs['posts_path'];
-        $this->clientId = $apiConfigs['client_id'];
-        $this->email = $apiConfigs['email'];
-        $this->name = $apiConfigs['name'];
+        $this->host = $apiConfigs["host"];
+        $this->authPath = $apiConfigs["auth_path"];
+        $this->postsPath = $apiConfigs["posts_path"];
+        $this->clientId = $apiConfigs["client_id"];
+        $this->email = $apiConfigs["email"];
+        $this->name = $apiConfigs["name"];
     }
 
     /**
@@ -39,12 +39,12 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
     {
         $request = new SupermetricsApiRequest();
         $request
-            ->setMethod('POST')
+            ->setMethod("POST")
             ->setUrl($this->getUrl($this->authPath))
             ->setData([
-                'client_id' => $this->clientId,
-                'email' => $this->email,
-                'name' => $this->name,
+                "client_id" => $this->clientId,
+                "email" => $this->email,
+                "name" => $this->name,
             ])
             ->setIsJson(false);
 
@@ -65,7 +65,7 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
      */
     private function getUrl(string $path): string
     {
-        return sprintf('%s%s', $this->host, $path);
+        return sprintf("%s%s", $this->host, $path);
     }
 
     /**
@@ -89,11 +89,11 @@ class SupermetricsApiClient extends BaseApiClient implements ApiClientInterface
     {
         $request = new SupermetricsApiRequest();
         $request
-            ->setMethod('GET')
+            ->setMethod("GET")
             ->setUrl($this->getUrl($this->postsPath))
             ->setToken($this->getToken())
             ->setData([
-                'page' => $page,
+                "page" => $page,
             ]);
 
         return $this->tokenizedRequest($request);

@@ -16,14 +16,14 @@ class UserStatisticsDTO
      */
     public function fromDatabase(array $data): UserStatisticsDTO
     {
-        $this->user = $data['user']
-            ? (new UserDTO())->fromDatabase($data['user'])
+        $this->user = $data["user"]
+            ? (new UserDTO())->fromDatabase($data["user"])
             : null;
-        $this->user_posts_count = $data['user_posts_count'];
-        $this->avg_message_length = $data['avg_message_length'];
-        $this->posts_by_month = $data['posts_by_month'];
-        $this->max_message_post = isset($data['max_message_post'][0])
-            ? (new PostDTO())->fromDatabase($data['max_message_post'][0])
+        $this->user_posts_count = $data["user_posts_count"];
+        $this->avg_message_length = $data["avg_message_length"];
+        $this->posts_by_month = $data["posts_by_month"];
+        $this->max_message_post = isset($data["max_message_post"][0])
+            ? (new PostDTO())->fromDatabase($data["max_message_post"][0])
             : null;
 
         return $this;
@@ -35,11 +35,11 @@ class UserStatisticsDTO
     public function toArray(): array
     {
         return [
-            'user' => $this->user,
-            'user_posts_count' => $this->user_posts_count,
-            'avg_message_length' => $this->avg_message_length,
-            'posts_by_month' => $this->posts_by_month,
-            'max_message_post' => $this->max_message_post,
+            "user" => $this->user,
+            "user_posts_count" => $this->user_posts_count,
+            "avg_message_length" => $this->avg_message_length,
+            "posts_by_month" => $this->posts_by_month,
+            "max_message_post" => $this->max_message_post,
         ];
     }
 }

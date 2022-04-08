@@ -3,9 +3,7 @@
 namespace App\Controllers;
 
 use App\ApiClients\Base\ApiClientInterface;
-use App\ApiClients\Supermetrics\SupermetricsApiClient;
 use App\CacheClients\CacheClientInterface;
-use App\CacheClients\Database\DatabaseCacheClient;
 use App\Requests\PostRequest;
 use App\Resources\PostsResource;
 use App\Services\PostService;
@@ -13,15 +11,13 @@ use App\Views\JsonView;
 
 class PostController
 {
-    private CacheClientInterface $cacheClient;
-    private ApiClientInterface $apiClient;
     private PostService $postsService;
 
-    public function __construct()
-    {
-        $this->cacheClient = new DatabaseCacheClient();
-        $this->apiClient = new SupermetricsApiClient();
-        $this->postsService = new PostService($this->cacheClient, $this->apiClient);
+    public function __construct(
+        CacheClientInterface $cacheClient,
+        ApiClientInterface $apiClient
+    ) {
+        $this->postsService = new PostService($cacheClient, $apiClient);
     }
 
     /**
@@ -42,6 +38,6 @@ class PostController
             ->setTotal($count)
             ->toArray();
 
-        JsonView::render($result);
+        JsonView::render(true, $result);
     }
 }

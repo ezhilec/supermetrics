@@ -6,7 +6,7 @@ use App\ApiClients\Base\ApiRequestInterface;
 
 class SupermetricsApiRequest implements ApiRequestInterface
 {
-    private string $method = 'GET';
+    private string $method = "GET";
     private string $url;
     private array $data = [];
     private bool $isJson = true;
@@ -103,7 +103,7 @@ class SupermetricsApiRequest implements ApiRequestInterface
     public function setToken(?string $token): SupermetricsApiRequest
     {
         $this->token = $token;
-        $this->data['sl_token'] = $token;
+        $this->data["sl_token"] = $token;
 
         return $this;
     }

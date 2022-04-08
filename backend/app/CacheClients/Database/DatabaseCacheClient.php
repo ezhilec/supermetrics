@@ -15,7 +15,7 @@ class DatabaseCacheClient implements CacheClientInterface
      */
     public function __construct()
     {
-        $this->db = Database::getInstance();
+        $this->db = Database::instance();
     }
 
     /**
@@ -112,22 +112,6 @@ class DatabaseCacheClient implements CacheClientInterface
         return $result->fetchColumn();
     }
 
-    /**
-     * @param string $slug
-     * @param int $limit
-     * @return array
-     */
-    public function getUserStatistics(string $slug, int $limit): array
-    {
-        return [
-            'user' => $this->getUser($slug),
-            'user_posts_count' => $this->getUserPostsCount($slug, $limit),
-            'avg_message_length' => $this->getUserAvgMessageLength($slug, $limit),
-            'posts_by_month' => $this->getUserPostsByMonth($slug, $limit),
-            'max_message_post' => $this->getUserMaxMessagePost($slug, $limit),
-        ];
-    }
-
     public function getUser(string $slug): array
     {
         $sql = "SELECT user_name, user_slug 
@@ -161,7 +145,7 @@ class DatabaseCacheClient implements CacheClientInterface
      * @param int $limit
      * @return int
      */
-    private function getUserPostsCount(string $slug, int $limit): int
+    public function getUserPostsCount(string $slug, int $limit): int
     {
         $sql = "
         SELECT COUNT(*) as posts_count
@@ -178,7 +162,7 @@ class DatabaseCacheClient implements CacheClientInterface
      * @param int $limit
      * @return int
      */
-    private function getUserAvgMessageLength(string $slug, int $limit): int
+    public function getUserAvgMessageLength(string $slug, int $limit): int
     {
         $sql = "
         SELECT ROUND(AVG(LENGTH(message))) as avg_message_length
@@ -195,7 +179,7 @@ class DatabaseCacheClient implements CacheClientInterface
      * @param int $limit
      * @return array
      */
-    private function getUserPostsByMonth(string $slug, int $limit): array
+    public function getUserPostsByMonth(string $slug, int $limit): array
     {
         $sql = "
         SELECT DATE_FORMAT(created_at, '%m.%Y') as month, COUNT(*) as posts_count
@@ -213,7 +197,7 @@ class DatabaseCacheClient implements CacheClientInterface
      * @param int $limit
      * @return array
      */
-    private function getUserMaxMessagePost(string $slug, int $limit): array
+    public function getUserMaxMessagePost(string $slug, int $limit): array
     {
         $sql = "
         SELECT *, LENGTH(message) AS message_length

@@ -15,18 +15,22 @@ class Database
     {
     }
 
+    private function __clone()
+    {
+    }
+
     /**
      * @return PDO
      * @throws Exception
      */
-    public static function getInstance(): PDO
+    public static function instance(): PDO
     {
-        $config = ConfigService::getInstance()->get('database');
+        $config = ConfigService::instance()->get("database");
 
         if (!self::$instance) {
-            $dsn = "mysql:host=" . $config['host'] .
-                ";dbname=" . $config['database'] .
-                ";charset=" . $config['charset'];
+            $dsn = "mysql:host=" . $config["host"] .
+                ";dbname=" . $config["database"] .
+                ";charset=" . $config["charset"];
 
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -35,7 +39,7 @@ class Database
             ];
 
             try {
-            $pdo = new PDO($dsn, $config['user'], $config['password'], $options);
+            $pdo = new PDO($dsn, $config["user"], $config["password"], $options);
             } catch (PDOException $e) {
                 throw new Exception("Can't connect to database");
             }
@@ -43,9 +47,5 @@ class Database
             self::$instance = $pdo;
         }
         return self::$instance;
-    }
-
-    private function __clone()
-    {
     }
 }
