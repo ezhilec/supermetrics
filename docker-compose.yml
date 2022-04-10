@@ -33,6 +33,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     volumes:
+      - supermetrics_nodemodules:/app/node_modules
       - ./frontend:/app
     ports:
       - "4002:3000"
@@ -61,6 +62,7 @@ services:
 volumes:
   supermetrics_db_data:
   supermetrics_vendor:
+  supermetrics_nodemodules:
 
 networks:
   supermetrics:
