@@ -3,11 +3,14 @@
 namespace App\CacheClients\Database;
 
 use App\CacheClients\CacheClientInterface;
+use App\CacheClients\TestableCacheClientInterface;
+use App\CacheClients\TestableCacheClientTrait;
 use Exception;
 use PDO;
 
-class DatabaseCacheClient implements CacheClientInterface
+class DatabaseCacheClient implements CacheClientInterface, TestableCacheClientInterface
 {
+    use TestableCacheClientTrait;
     private PDO $db;
 
     /**
@@ -122,22 +125,6 @@ class DatabaseCacheClient implements CacheClientInterface
         $result = $this->db->prepare($sql);
         $result->execute([$slug]);
         return $result->fetchAll()[0] ?? [];
-    }
-
-    /**
-     * @return void
-     */
-    public function beforeTests(): void
-    {
-        $this->db->beginTransaction();
-    }
-
-    /**
-     * @return void
-     */
-    public function afterTests(): void
-    {
-        $this->db->rollback();
     }
 
     /**

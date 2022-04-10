@@ -61,7 +61,7 @@ class PaginatedResource
         return [
             "list" => $this->list,
             "page" => $this->page,
-            "perPage" => $this->perPage,
+            "per_page" => $this->perPage,
             "total" => $this->total
         ];
     }

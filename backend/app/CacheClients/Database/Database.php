@@ -26,7 +26,6 @@ class Database
     public static function instance(): PDO
     {
         $config = ConfigService::instance()->get("database");
-
         if (!self::$instance) {
             $dsn = "mysql:host=" . $config["host"] .
                 ";dbname=" . $config["database"] .
@@ -39,7 +38,7 @@ class Database
             ];
 
             try {
-            $pdo = new PDO($dsn, $config["user"], $config["password"], $options);
+                $pdo = new PDO($dsn, $config["user"], $config["password"], $options);
             } catch (PDOException $e) {
                 throw new Exception("Can't connect to database");
             }

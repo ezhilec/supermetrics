@@ -1,6 +1,5 @@
 <?php
 
-use App\Services\EnvService;
 use App\Services\ConfigService;
 use App\Services\RouteService;
 use App\Controllers\ErrorController;
@@ -12,8 +11,6 @@ session_start();
 $url = $_SERVER['REQUEST_URI'];
 
 try {
-    EnvService::init();
-
     $routes = ConfigService::instance()->get("routes");
 
     $routeService = new RouteService();

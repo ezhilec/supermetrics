@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseApiUrl = 'http://127.0.0.1:4001'
+const baseApiUrl = 'http://127.0.0.1:4001/api/v1'
 
 export const getPostsRequest = (page, perPage) => {
   return axios.get(`${baseApiUrl}/posts?page=${page}&perPage=${perPage}`)

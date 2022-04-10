@@ -72,14 +72,15 @@ function Pagination (props) {
           key={index}
           onClick={handleChangePage(item)}
           className={cn('pagination__item', {
-            'pagination__item_active': currentPage === item
-          })}
+              'pagination__item_active': currentPage === item
+            },
+            'pagination__item_page')}
         >
           <span>{item}</span>
         </div>
         : <div
           key={index}
-          className="pagination__item-space"
+          className="pagination__item_space"
         >
           {item}
         </div>
@@ -95,8 +96,9 @@ function Pagination (props) {
       <li
         onClick={currentPage > 1 ? handleChangePage(currentPage - 1) : null}
         className={cn('pagination__item', {
-          'pagination__item_disabled': currentPage === 1
-        })}
+            'pagination__item_disabled': currentPage === 1
+          },
+          'pagination__item_arrow')}
       >
         &larr;
       </li>
@@ -106,8 +108,9 @@ function Pagination (props) {
       <li
         onClick={currentPage < lastPage ? handleChangePage(currentPage + 1) : null}
         className={cn('pagination__item', {
-          'pagination__item_disabled': currentPage === lastPage
-        })}
+            'pagination__item_disabled': currentPage === lastPage
+          },
+          'pagination__item_arrow')}
       >
         &rarr;
       </li>

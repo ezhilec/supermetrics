@@ -15,6 +15,20 @@
     margin-right: 50px;
   }
 
+  &__header-menu-toggler {
+    display: none;
+    cursor: pointer;
+  }
+
+  &__header-menu-wrapper-close {
+    display: none;
+  }
+
+  &__header-menu-wrapper {
+    display: flex;
+    height: 100%;
+  }
+
   &__header-menu {
     display: flex;
     justify-content: space-between;
@@ -53,5 +67,68 @@
 
   &__navigation {
     margin-bottom: 20px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .supermetrics-app {
+    &__header {
+      justify-content: space-between;
+    }
+
+    &__header-menu-wrapper {
+      display: none;
+    }
+
+    &__header-menu-wrapper_fixed {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, .7);
+      padding: 100px 20px 20px 20px;
+      z-index: 1;
+
+      .supermetrics-app__header-menu {
+        height: auto;
+        flex-direction: column;
+      }
+
+      .supermetrics-app__header-menu-item {
+        justify-content: center;
+      }
+
+      .supermetrics-app__header-menu-link {
+        color: $main-color;
+        padding: 10px 30px;
+        border-radius: 10px;
+      }
+
+      .supermetrics-app__header-menu-link:hover,
+      .supermetrics-app__header-menu-link_active {
+        color: $header-color;
+      }
+
+    }
+
+    &__header-menu-toggler {
+      display: block;
+    }
+
+    &__header-menu-wrapper-close {
+      display: block;
+      position: fixed;
+      z-index: 2;
+      right: 10px;
+      top: 10px;
+      padding: 20px;
+      color: $main-color;
+      cursor: pointer;
+      background: $main-bg;
+      border-radius: 10px;
+      line-height: 60%;
+    }
   }
 }

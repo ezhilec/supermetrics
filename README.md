@@ -17,6 +17,9 @@
 
 ## Install
 
+Copy env file:
+``cp backend/env.ini.example backend/env.ini``
+
 Clone this repository and run:
 ``docker-compose up --build``
 

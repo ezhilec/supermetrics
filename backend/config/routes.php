@@ -1,17 +1,19 @@
 <?php
 
+const API_PREFIX = "\/api\/v1";
+
 return [
-    "/^\/posts$/" => [
+    "/^" . API_PREFIX . "\/posts$/" => [
         "name" => "PostController",
         "bindings" => ["cacheClient", "apiClient"],
         "method" => "index"
     ],
-    "/^\/users\/(?<userId>.+)$/" => [
+    "/^" . API_PREFIX . "\/users\/(?<userId>.+)$/" => [
         "name" => "UserController",
         "bindings" => ["cacheClient", "apiClient"],
         "method" => "show"
     ],
-    "/^\/users$/" => [
+    "/^" . API_PREFIX . "\/users$/" => [
         "name" => "UserController",
         "bindings" => ["cacheClient", "apiClient"],
         "method" => "index"

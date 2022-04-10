@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Exception;
+
 class ConfigService
 {
     protected static ?ConfigService $instance = null;
@@ -18,9 +20,16 @@ class ConfigService
 
     /**
      * @return ConfigService
+     * @throws Exception
      */
     public static function instance(): ConfigService
     {
+        try {
+            EnvService::init();
+        }  catch (Exception $e) {
+            throw new Exception($e->getMessage());
+        }
+
         if (!self::$instance) {
             self::$instance = new ConfigService();
             if (!self::$instance->configs) {

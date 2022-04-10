@@ -19,8 +19,4 @@ interface CacheClientInterface
     public function getUserPostsByMonth(string $slug, int $limit): array;
 
     public function getUserMaxMessagePost(string $slug, int $limit): array;
-
-    public function beforeTests(): void;
-
-    public function afterTests(): void;
 }

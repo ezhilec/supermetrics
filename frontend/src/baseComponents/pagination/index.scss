@@ -32,9 +32,25 @@
     background: inherit;
   }
 
-  &__item-space {
+  &__item_space {
     padding: 10px;
     margin-right: 10px;
   }
 
+}
+
+@media only screen and (max-width: 800px) {
+  .pagination {
+    &__item_page {
+      display: none;
+    }
+
+    &__item_space {
+      display: none;
+    }
+
+    &__item_active {
+      display: block;
+    }
+  }
 }
