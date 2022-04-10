@@ -9,6 +9,7 @@ function UserContainer () {
   let { id } = useParams()
 
   const isLoading = useSelector(state => state.users.isLoading)
+  const error = useSelector(state => state.users.error)
   const user = useSelector(state => state.users.current)
 
   const dispatch = useDispatch()
@@ -24,6 +25,7 @@ function UserContainer () {
   if (user) {
     return <User
       user={user}
+      error={error}
       isLoading={isLoading}
     />
   }

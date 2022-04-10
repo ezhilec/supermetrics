@@ -13,6 +13,7 @@ function UsersContainer () {
 
   return <Users
     users={users.list}
+    error={users.error}
     isLoading={users.isLoading}
     page={users.page}
     perPage={users.perPage}

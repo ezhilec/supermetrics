@@ -3,11 +3,13 @@ import Pagination from '../../baseComponents/pagination/Pagination'
 import Loading from '../../baseComponents/loading/Loading'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Error from '../../baseComponents/error/Error'
 
 function Posts (props) {
   const {
     posts,
     isLoading,
+    error,
     page,
     perPage,
     total,
@@ -23,13 +25,15 @@ function Posts (props) {
     <div className="table__cell">{post.type}</div>
   </div>
 
+  const renderHeader = () => <div className="table__head">
+    <div className="table__cell">Date</div>
+    <div className="table__cell">User</div>
+    <div className="table__cell">Message</div>
+    <div className="table__cell">Type</div>
+  </div>
+
   const renderList = () => <div className="table">
-    <div className="table__head">
-      <div className="table__cell">Date</div>
-      <div className="table__cell">User</div>
-      <div className="table__cell">Message</div>
-      <div className="table__cell">Type</div>
-    </div>
+    {renderHeader()}
     <div className="table__body">
       {posts.map((post) =>
         renderItem(post)
@@ -40,6 +44,8 @@ function Posts (props) {
   return (
     <div className="posts">
       {isShowTitle && <h1>Posts</h1>}
+
+      {error && <Error error={error}/> }
 
       {isShowPagination &&
         <Pagination

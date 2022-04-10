@@ -68,6 +68,14 @@
   &__navigation {
     margin-bottom: 20px;
   }
+
+  &__error {
+    background: $error-bg;
+    color: $error-color;
+    padding: 20px;
+    border-radius: $border-radius;
+    margin-bottom: 20px;
+  }
 }
 
 @media only screen and (max-width: 800px) {
@@ -103,7 +111,7 @@
       .supermetrics-app__header-menu-link {
         color: $main-color;
         padding: 10px 30px;
-        border-radius: 10px;
+        border-radius: $border-radius;
       }
 
       .supermetrics-app__header-menu-link:hover,
@@ -127,7 +135,7 @@
       color: $main-color;
       cursor: pointer;
       background: $main-bg;
-      border-radius: 10px;
+      border-radius: $border-radius;
       line-height: 60%;
     }
   }

@@ -13,6 +13,7 @@ function PostsContainer () {
 
   return <Posts
     posts={posts.list}
+    error={posts.error}
     isLoading={posts.isLoading}
     page={posts.page}
     perPage={posts.perPage}

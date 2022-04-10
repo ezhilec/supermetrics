@@ -3,14 +3,20 @@ import { useNavigate } from 'react-router'
 import Loading from '../../baseComponents/loading/Loading'
 import Posts from '../Posts/Posts'
 import PropTypes from 'prop-types'
+import Error from '../../baseComponents/error/Error'
 
 function User (params) {
   const {
     isLoading,
+    error,
     user
   } = params
 
   const navigate = useNavigate()
+
+  if (error) {
+    return <Error error={error}/>
+  }
 
   if (!user || isLoading) {
     return <Loading/>
@@ -22,6 +28,9 @@ function User (params) {
         <a onClick={() => navigate(-1)} className="btn">&larr; Go back</a>
       </div>
       <h1>{user.user.name} statistics</h1>
+
+      {error && <div className={'supermetrics-app__error'}>{error}</div>}
+
       <div className="user__statistics">
         <div className="user__statistics-item">
           <div className="user__statistics-item-name">
@@ -85,6 +94,7 @@ function User (params) {
 
 User.propTypes = {
   user: PropTypes.object.isRequired,
+  error: PropTypes.string,
   isLoading: PropTypes.bool.isRequired,
 }
 
